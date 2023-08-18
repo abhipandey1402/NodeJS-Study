@@ -16,10 +16,14 @@ const Todo = new Schema(
       default: Date.now(),
       required: false,
     },
+    username: {
+      type: String,
+      required: true,
+    },
   },
   {
     strict: false,
   }
 );
 
-module.exports = Mongoose.model("Todos", Todo);
+module.exports = Mongoose.model("todos", Todo);
