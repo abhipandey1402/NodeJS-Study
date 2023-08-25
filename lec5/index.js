@@ -62,7 +62,18 @@ app.post("/login", async (req, res) => {
 app.get("/todos/:username", isAuth, async (req, res) => {
   try {
     const username = req.params.username;
-    const todos = await Todo.find({ username }).sort({ time: 1 });
+    const page = req.query.page || 1; //client
+    const LIMIT = 5; // backend
+
+    const todos = await Todo.aggregate([
+      { $match: { username: username } },
+      { $sort: { time: -1 } },
+      {
+        $facet: {
+          data: [{ $skip: (parseInt(page) - 1) * LIMIT }, { $limit: LIMIT }],
+        },
+      },
+    ]);
     res.status(200).json(todos);
   } catch (e) {
     res.status(500).send("Internal server error");
