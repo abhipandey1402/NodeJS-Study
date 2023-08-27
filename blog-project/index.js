@@ -5,7 +5,8 @@ const MongoDbSession = require("connect-mongodb-session")(session);
 
 //file imports
 const db = require("./config/db");
-const routes = require("./routes/user");
+const userRoutes = require("./routes/user");
+const blogRoutes = require("./routes/blog");
 
 const app = express();
 
@@ -29,7 +30,8 @@ app.use(
 );
 
 // Adding all the routes from routes folder
-app.use("/", routes);
+app.use("/user", userRoutes);
+app.use("/blog", blogRoutes);
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log("Server is running at port", process.env.SERVER_PORT);

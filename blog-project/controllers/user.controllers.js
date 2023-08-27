@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const {
+  verifyUsernameAndEmailExists,
+} = require("../utils/verifyEmailUsername");
 
 const BCRYPT_SALT = parseInt(process.env.BCRYPT_SALT);
 
@@ -18,6 +21,31 @@ const registerUser = async (req, res) => {
       message: "Invalid Input",
       data: isValid.error,
     });
+  }
+
+  const usernameEmailVerify = await verifyUsernameAndEmailExists(
+    req.body.email,
+    req.body.username
+  );
+
+  if (usernameEmailVerify === "E") {
+    res.status(400).send({
+      status: 400,
+      message: "Email already exists!",
+    });
+    return;
+  } else if (usernameEmailVerify === "U") {
+    res.status(400).send({
+      status: 400,
+      message: "Username already exists!",
+    });
+    return;
+  } else if (usernameEmailVerify === "Err") {
+    res.status(400).send({
+      status: 400,
+      message: "DB Error: Couldn't register user!",
+    });
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(req.body.password, BCRYPT_SALT);
