@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const {
   verifyUsernameAndEmailExists,
-} = require("../utils/verifyEmailUsername");
+} = require("../utils/verifyEmailandUsername");
 
 const BCRYPT_SALT = parseInt(process.env.BCRYPT_SALT);
 
