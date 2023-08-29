@@ -111,6 +111,7 @@ const loginUser = async (req, res) => {
       return res.status(200).send({
         status: 200,
         message: "Successfully logged in!",
+        data: req.session.user,
       });
     } else {
       return res.status(400).send({

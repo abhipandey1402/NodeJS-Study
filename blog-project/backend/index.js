@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const session = require("express-session");
 const MongoDbSession = require("connect-mongodb-session")(session);
+const cors = require("cors");
 
 //file imports
 const db = require("./config/db");
@@ -13,6 +14,11 @@ const app = express();
 
 //middlewares
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 //store for Mongodb session
 const store = new MongoDbSession({

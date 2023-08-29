@@ -15,6 +15,7 @@ const createBlog = async (req, res) => {
     });
   }
 
+  console.log(req.session);
   const blogObj = new Blog({
     title: req.body.title,
     textBody: req.body.textBody,
