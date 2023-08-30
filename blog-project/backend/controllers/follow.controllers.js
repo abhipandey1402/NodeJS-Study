@@ -4,7 +4,7 @@ const User = require("../models/User");
 const { verifyUserId } = require("../utils/verifyUserId");
 
 const followUser = async (req, res) => {
-  const followerUserId = req.session.user.userId;
+  const followerUserId = req.params.userid;
   const { followingUserId } = req.body;
 
   // validating the body

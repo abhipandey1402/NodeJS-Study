@@ -104,6 +104,8 @@ const loginUser = async (req, res) => {
       userId: userData._id,
     };
 
+    console.log(req.session._id);
+
     // Password is matched with the encrypted db password
     const isPasswordMatched = await bcrypt.compare(password, userData.password);
 
@@ -145,4 +147,21 @@ const logoutUser = (req, res) => {
   });
 };
 
-module.exports = { registerUser, loginUser, logoutUser };
+const getAllUsers = async (req, res) => {
+  const userId = req.params.userid;
+  try {
+    const allUsers = await User.find({ _id: { $ne: userId } });
+    res.status(200).send({
+      status: 200,
+      message: "Fetched all the users!",
+      data: allUsers,
+    });
+  } catch (err) {
+    res.status(400).send({
+      status: 400,
+      message: "DB Error: Get all users!",
+    });
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser, getAllUsers };

@@ -5,18 +5,30 @@ import Register from "./pages/Register";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import MyBlogs from "./pages/MyBlogs";
-import CreateBlog from "./pages/CreateBlog";
+import CreateEditBlog from "./pages/CreateEditBlog";
+import Users from "./pages/Users";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<h1>This is the homepage</h1>}></Route>
-        <Route path="/register" element={<Register />}></Route>
+        <Route path="/" element={<Register />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/homepage" element={<Homepage />}></Route>
         <Route path="/myblogs" element={<MyBlogs />}></Route>
-        <Route path="/createblog" element={<CreateBlog />}></Route>
+        <Route path="/users" element={<Users />}></Route>
+        <Route
+          path="/createblog"
+          element={
+            <CreateEditBlog pageTitle={"Create Blog"} btnText={"Create Blog"} />
+          }
+        ></Route>
+        <Route
+          path="/editblog"
+          element={
+            <CreateEditBlog pageTitle={"Edit Blog"} btnText={"Edit Blog"} />
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

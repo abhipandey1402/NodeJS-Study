@@ -7,11 +7,13 @@ const {
   getUserBlogs,
   deleteBlog,
   editBlog,
+  getHomepageBlogs,
 } = require("../controllers/blog.controllers");
 
-router.post("/createBlog", isAuth, createBlog);
-router.get("/getUserBlogs", isAuth, getUserBlogs);
+router.post("/createBlog/:userid", isAuth, createBlog);
+router.get("/getUserBlogs/:userid", isAuth, getUserBlogs);
 router.delete("/deleteBlog/:blogId", deleteBlog);
-router.put("/editBlog", editBlog);
+router.put("/editBlog/:userid", editBlog);
+router.get("/homeblogs/:userid", getHomepageBlogs);
 
 module.exports = router;

@@ -1,25 +1,29 @@
 import axios from "axios";
-import React from "react";
-import Button from "react-bootstrap/Button";
+import React, { useEffect, useState } from "react";
+
+import BlogCard from "../components/Blogs/BlogCard";
+import "../App.css";
+import Header from "../components/Header";
 
 function Homepage() {
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/login";
-    axios
-      .post("http://localhost:8001/user/logout")
-      .then((res) => console.log(res.data))
-      .catch((err) => alert(err));
-  };
+  const [blogs, setBlogs] = useState();
+  const userData = JSON.parse(localStorage.getItem("user"));
 
-  const handleCreateBlog = () => {
-    window.location.href = "/createblog";
-  };
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8001/blog/homeblogs/${userData.userId}`)
+      .then((res) => {
+        setBlogs(res.data.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, [userData.userId]);
+
   return (
     <div>
-      <h1>Homepage</h1>
-      <Button onClick={handleLogout}>Logout</Button>
-      <Button onClick={handleCreateBlog}>Create Blog</Button>
+      <Header />
+      {blogs ? blogs.map((blog) => <BlogCard props={blog} />) : <></>}
     </div>
   );
 }

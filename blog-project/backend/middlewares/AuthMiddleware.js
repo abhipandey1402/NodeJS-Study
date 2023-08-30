@@ -1,11 +1,11 @@
 const Session = require("../models/Session");
 
 const isAuth = (req, res, next) => {
-  try{
-    const userData = Session.find({session.user.userId:  })
-  }catch(err){
-    res.send();
-  }
+  // try{
+  //   const userData = Session.find({  })
+  // }catch(err){
+  //   res.send();
+  // }
   // if (req.session.isAuth) {
   //   next();
   // } else {

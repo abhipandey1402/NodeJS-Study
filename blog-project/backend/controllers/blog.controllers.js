@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const Blog = require("../models/Blog");
+const Follow = require("../models/Follow");
 
 const createBlog = async (req, res) => {
   const isValid = Joi.object({
@@ -19,7 +20,7 @@ const createBlog = async (req, res) => {
   const blogObj = new Blog({
     title: req.body.title,
     textBody: req.body.textBody,
-    userId: req.session.user.userId,
+    userId: req.params.userid,
   });
 
   try {
@@ -39,7 +40,7 @@ const createBlog = async (req, res) => {
 
 const getUserBlogs = async (req, res) => {
   try {
-    const userId = req.session.user.userId;
+    const userId = req.params.userid;
     const page = req.query.page || 1;
     const LIMIT = 10;
 
@@ -53,10 +54,12 @@ const getUserBlogs = async (req, res) => {
     //   },
     // ]);
 
-    const myBlogsData = await Blog.find(userId)
+    const myBlogsData = await Blog.find({ userId })
       .sort({ creationDateTime: -1 })
       .skip(parseInt(page) - 1)
       .limit(LIMIT);
+
+    console.log(myBlogsData);
 
     res.status(200).send({
       status: 200,
@@ -92,7 +95,7 @@ const deleteBlog = async (req, res) => {
 
 const editBlog = async (req, res) => {
   const { blogId, title, textBody } = req.body;
-  const userId = req.session.user.userId;
+  const userId = req.params.userid;
 
   try {
     const blogData = await Blog.findById(blogId);
@@ -144,4 +147,37 @@ const editBlog = async (req, res) => {
   }
 };
 
-module.exports = { createBlog, getUserBlogs, deleteBlog, editBlog };
+const getHomepageBlogs = async (req, res) => {
+  const userId = req.params.userid;
+  try {
+    const followingList = await Follow.find({ followerUserId: userId });
+
+    let followingUserId = [];
+    followingList.forEach((followObj) => {
+      followingUserId.push(followObj.followingUserId);
+    });
+
+    const followingBlogs = await Blog.find({
+      userId: { $in: followingUserId },
+    });
+
+    res.status(200).send({
+      status: 200,
+      message: "Fetched all homepage blogs!",
+      data: followingBlogs,
+    });
+  } catch (err) {
+    res.status(400).send({
+      status: 400,
+      message: "Unable to find the blogs!",
+    });
+  }
+};
+
+module.exports = {
+  createBlog,
+  getUserBlogs,
+  deleteBlog,
+  editBlog,
+  getHomepageBlogs,
+};
