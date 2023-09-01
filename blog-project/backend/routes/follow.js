@@ -10,8 +10,8 @@ const { isAuth } = require("../middlewares/AuthMiddleware");
 const router = express();
 
 router.post("/followUser/:userid", isAuth, followUser);
-router.get("/followingList", isAuth, getFollowingList);
-router.get("/followerList", isAuth, getFollowerList);
-router.post("/unfollowUser", isAuth, unfollowUser);
+router.get("/followingList/:userid", isAuth, getFollowingList);
+router.get("/followerList/:userid", isAuth, getFollowerList);
+router.post("/unfollowUser/:userid", isAuth, unfollowUser);
 
 module.exports = router;

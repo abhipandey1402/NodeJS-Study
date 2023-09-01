@@ -9,6 +9,7 @@ const db = require("./config/db");
 const userRoutes = require("./routes/user");
 const blogRoutes = require("./routes/blog");
 const followRoutes = require("./routes/follow");
+const { cleanUpBin } = require("./utils/cron");
 
 const app = express();
 
@@ -43,4 +44,5 @@ app.use("/follow", followRoutes);
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log("Server is running at port", process.env.SERVER_PORT);
+  cleanUpBin();
 });

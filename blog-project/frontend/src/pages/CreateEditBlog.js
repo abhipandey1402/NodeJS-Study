@@ -18,7 +18,7 @@ function CreateEditBlog({ pageTitle, btnText }) {
     if (pageTitle === "Create Blog") {
       axios
         .post(
-          `http://localhost:8001/blog/createBlog/${userData.userId}`,
+          `${process.env.REACT_APP_SERVER_URL}/blog/createBlog/${userData.userId}`,
           blogObj
         )
         .then((res) => {
@@ -30,7 +30,10 @@ function CreateEditBlog({ pageTitle, btnText }) {
         });
     } else {
       axios
-        .put(`http://localhost:8001/blog/editBlog/${userData.userId}`, blogObj)
+        .put(
+          `${process.env.REACT_APP_SERVER_URL}/blog/editBlog/${userData.userId}`,
+          blogObj
+        )
         .then((res) => {
           alert("Blog edited successfully!");
           window.location.href = "/myblogs";

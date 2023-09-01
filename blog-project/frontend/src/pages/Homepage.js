@@ -11,7 +11,9 @@ function Homepage() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8001/blog/homeblogs/${userData.userId}`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/blog/homeblogs/${userData.userId}`
+      )
       .then((res) => {
         setBlogs(res.data.data);
       })

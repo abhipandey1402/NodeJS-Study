@@ -21,7 +21,7 @@ function InputForm() {
     };
 
     axios
-      .post("http://localhost:8001/user/register", userObj)
+      .post(`${process.env.REACT_APP_SERVER_URL}/user/register`, userObj)
       .then((res) => {
         console.log(res.data.status);
         if (res.data.status === 201) {

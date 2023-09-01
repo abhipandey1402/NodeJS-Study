@@ -1,19 +1,16 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import UserCard from "../components/Users/UserCard";
-import "../App.css";
+import axios from "axios";
 import Header from "../components/Header";
-import Button from "react-bootstrap/Button";
 
-function Users() {
-  const [users, setUsers] = useState();
-
+function FollowerList() {
+  const [followerList, setFollowerList] = useState();
   const userData = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_SERVER_URL}/user/getallusers/${userData.userId}`
+        `${process.env.REACT_APP_SERVER_URL}/follow/followerList/${userData.userId}`
       )
       .then((res1) => {
         axios
@@ -51,40 +48,24 @@ function Users() {
               }
             });
 
-            setUsers(allUserDetails);
+            setFollowerList(allUserDetails);
           })
           .catch((err) => alert(err));
       })
       .catch((err) => alert(err));
   }, [userData.userId]);
-  return (
-    <>
-      <Header />
-      <div className="follow_list">
-        {" "}
-        <h1 className="m-5">Users</h1>
-        <div className="follow_btns">
-          {" "}
-          <Button
-            className="m-2"
-            onClick={() => (window.location.href = "/followinglist")}
-          >
-            Following List
-          </Button>
-          <Button
-            className="m-2"
-            onClick={() => (window.location.href = "/followerlist")}
-          >
-            Follower List
-          </Button>
-        </div>
-      </div>
 
-      <div className="users_page">
-        {users ? users.map((user) => <UserCard props={user} />) : <></>}
-      </div>
-    </>
+  return (
+    <div>
+      <Header />
+      <h1 className="m-5">Follower List</h1>
+      {followerList ? (
+        followerList.map((user) => <UserCard props={user} />)
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }
 
-export default Users;
+export default FollowerList;

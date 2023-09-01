@@ -8,7 +8,7 @@ function Header() {
     localStorage.removeItem("user");
     window.location.href = "/login";
     axios
-      .post("http://localhost:8001/user/logout")
+      .post(`${process.env.REACT_APP_SERVER_URL}/user/logout`)
       .then((res) => console.log(res.data))
       .catch((err) => alert(err));
   };

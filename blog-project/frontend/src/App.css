@@ -7,3 +7,13 @@
 .users_page{
     display: flex;
 }
+
+.follow_list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.follow_btns{
+    margin-right: 100px;
+}

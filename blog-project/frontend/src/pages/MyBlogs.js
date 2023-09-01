@@ -4,14 +4,15 @@ import BlogCard from "../components/Blogs/BlogCard";
 import Header from "../components/Header";
 
 function MyBlogs() {
-  const [page, setPage] = useState(1);
   const [myBlogs, setMyBlogs] = useState();
   const userData = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    console.log(userData.userId);
+    console.log(process.env.SERVER_URL);
     axios
-      .get(`http://localhost:8001/blog/getUserBlogs/${userData.userId}`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/blog/getUserBlogs/${userData.userId}`
+      )
       .then((res) => {
         setMyBlogs(res.data.data);
       });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -12,7 +12,9 @@ function BlogCard({ props }) {
 
   const handleDelete = () => {
     axios
-      .delete(`http://localhost:8001/blog/deleteBlog/${props._id}`)
+      .delete(
+        `${process.env.REACT_APP_SERVER_URL}/blog/deleteBlog/${props._id}`
+      )
       .then((res) => {
         window.location.reload();
       })
@@ -28,7 +30,10 @@ function BlogCard({ props }) {
       textBody,
     };
     axios
-      .put(`http://localhost:8001/blog/editBlog/${userData.userId}`, blogObj)
+      .put(
+        `${process.env.REACT_APP_SERVER_URL}/blog/editBlog/${userData.userId}`,
+        blogObj
+      )
       .then((res) => {
         alert("Blog edited successfully!");
         window.location.href = "/myblogs";

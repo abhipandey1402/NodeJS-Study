@@ -16,7 +16,6 @@ const createBlog = async (req, res) => {
     });
   }
 
-  console.log(req.session);
   const blogObj = new Blog({
     title: req.body.title,
     textBody: req.body.textBody,
@@ -54,12 +53,10 @@ const getUserBlogs = async (req, res) => {
     //   },
     // ]);
 
-    const myBlogsData = await Blog.find({ userId })
+    const myBlogsData = await Blog.find({ userId, isDeleted: false })
       .sort({ creationDateTime: -1 })
       .skip(parseInt(page) - 1)
       .limit(LIMIT);
-
-    console.log(myBlogsData);
 
     res.status(200).send({
       status: 200,
@@ -79,7 +76,12 @@ const deleteBlog = async (req, res) => {
   const blogId = req.params.blogId;
 
   try {
-    await Blog.deleteOne({ _id: blogId });
+    await Blog.findOneAndUpdate(
+      {
+        _id: blogId,
+      },
+      { isDeleted: true, deletionDateTime: Date.now() }
+    );
 
     res.status(200).send({
       status: 200,
@@ -159,6 +161,7 @@ const getHomepageBlogs = async (req, res) => {
 
     const followingBlogs = await Blog.find({
       userId: { $in: followingUserId },
+      isDeleted: false,
     });
 
     res.status(200).send({

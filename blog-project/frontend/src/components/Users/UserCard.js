@@ -5,15 +5,28 @@ import Card from "react-bootstrap/Card";
 function UserCard({ props }) {
   const userData = JSON.parse(localStorage.getItem("user"));
 
-  const handleFollow = (followingUserId) => {
-    const followObj = { followingUserId };
-    axios
-      .post(
-        `http://localhost:8001/follow/followUser/${userData.userId}`,
-        followObj
-      )
-      .then((res) => alert("Successfully followed!"))
-      .catch((err) => alert(err));
+  const handleFollowOrUnfollow = (followingUserId, followStatus) => {
+    if (followStatus === false) {
+      const followObj = { followingUserId };
+      axios
+        .post(
+          `${process.env.REACT_APP_SERVER_URL}/follow/followUser/${userData.userId}`,
+          followObj
+        )
+        .then((res) => alert("Successfully followed!"))
+        .catch((err) => alert(err));
+    } else {
+      const followObj = { followingUserId };
+      axios
+        .post(
+          `${process.env.REACT_APP_SERVER_URL}/follow/unfollowUser/${userData.userId}`,
+          followObj
+        )
+        .then((res) => alert("Successfully unfollowed!"))
+        .catch((err) => alert(err));
+    }
+
+    window.location.reload();
   };
 
   return (
@@ -22,8 +35,11 @@ function UserCard({ props }) {
         <Card.Title>{props.name}</Card.Title>
         <Card.Text>{props.username}</Card.Text>
         <Card.Text>{props.email}</Card.Text>
-        <Button variant="primary" onClick={() => handleFollow(props._id)}>
-          Follow
+        <Button
+          variant="primary"
+          onClick={() => handleFollowOrUnfollow(props._id, props.follow)}
+        >
+          {props.follow === true ? "Unfollow" : "Follow"}
         </Button>
       </Card.Body>
     </Card>

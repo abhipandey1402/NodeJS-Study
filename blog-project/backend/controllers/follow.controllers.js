@@ -102,7 +102,7 @@ const followUser = async (req, res) => {
 };
 
 const getFollowingList = async (req, res) => {
-  const userId = req.session.user.userId;
+  const userId = req.params.userid;
   const page = req.query.page || 1;
   const LIMIT = 10;
 
@@ -146,10 +146,22 @@ const getFollowingList = async (req, res) => {
       _id: { $in: followingUserId },
     });
 
+    let usersData = [];
+    followingUserDetails.map((user) => {
+      let userData = {
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      };
+
+      usersData.push(userData);
+    });
+
     return res.status(200).send({
       status: 200,
       message: "Fetched following list",
-      data: followingUserDetails,
+      data: usersData,
     });
   } catch (err) {
     return res.status(400).send({
@@ -160,7 +172,7 @@ const getFollowingList = async (req, res) => {
 };
 
 const getFollowerList = async (req, res) => {
-  const userId = req.session.user.userId;
+  const userId = req.params.userid;
   const page = req.query.page || 1;
   const LIMIT = 10;
 
@@ -208,10 +220,22 @@ const getFollowerList = async (req, res) => {
       _id: { $in: followerUserId },
     });
 
+    let usersData = [];
+    followerUserDetails.map((user) => {
+      let userData = {
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      };
+
+      usersData.push(userData);
+    });
+
     return res.status(200).send({
       status: 200,
       message: "Fetched followers list",
-      data: followerUserDetails,
+      data: usersData,
     });
   } catch (err) {
     return res.status(400).send({
@@ -222,7 +246,7 @@ const getFollowerList = async (req, res) => {
 };
 
 const unfollowUser = async (req, res) => {
-  const followerUserId = req.session.user.userId;
+  const followerUserId = req.params.userid;
   const { followingUserId } = req.body;
 
   // validating the body

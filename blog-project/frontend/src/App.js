@@ -7,6 +7,8 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import MyBlogs from "./pages/MyBlogs";
 import CreateEditBlog from "./pages/CreateEditBlog";
 import Users from "./pages/Users";
+import FollowingList from "./pages/FollowingList";
+import FollowerList from "./pages/FollowerList";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
             <CreateEditBlog pageTitle={"Edit Blog"} btnText={"Edit Blog"} />
           }
         ></Route>
+        <Route path="/followinglist" element={<FollowingList />}></Route>
+        <Route path="/followerlist" element={<FollowerList />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -21,7 +21,7 @@ function Login() {
     };
 
     axios
-      .post("http://localhost:8001/user/login", loginObj)
+      .post(`${process.env.REACT_APP_SERVER_URL}/user/login`, loginObj)
       .then((res) => {
         console.log(res.data.data);
         localStorage.setItem("user", JSON.stringify(res.data.data));

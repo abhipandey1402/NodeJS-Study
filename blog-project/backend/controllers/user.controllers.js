@@ -151,10 +151,23 @@ const getAllUsers = async (req, res) => {
   const userId = req.params.userid;
   try {
     const allUsers = await User.find({ _id: { $ne: userId } });
+
+    let usersData = [];
+    allUsers.map((user) => {
+      let userData = {
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      };
+
+      usersData.push(userData);
+    });
+
     res.status(200).send({
       status: 200,
       message: "Fetched all the users!",
-      data: allUsers,
+      data: usersData,
     });
   } catch (err) {
     res.status(400).send({
